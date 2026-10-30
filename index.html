@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trio Pro — Fragger, IGL e Suporte no Fortnite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#EEF5FF; --ink:#0B2A5B; --muted:#47618A;
+  --line:#C6DAF7; --storm:#6B3FD4; --sky:#1565D8; --sun:#FFC21A; --shadow:#1565D8;
+  --role:var(--storm);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A2A66; --surface:#12397F; --ink:#FFFFFF; --muted:#C2D6F7;
+    --line:#2B56A6; --storm:#9B74FF; --sky:#8CC2FF; --sun:#FFD04D; --shadow:#04173D;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A2A66; --surface:#12397F; --ink:#FFFFFF; --muted:#C2D6F7;
+  --line:#2B56A6; --storm:#9B74FF; --sky:#8CC2FF; --sun:#FFD04D; --shadow:#04173D;
+  color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 Barlow,"Segoe UI",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:62rem;margin:0 auto;padding:0 1.25rem}
+
+header{padding:2.5rem 0 1.5rem}
+h1{font-family:Bungee,Impact,"Arial Black",sans-serif;font-weight:400;font-size:clamp(2.2rem,7vw,4.2rem);line-height:.95;margin:0 0 .75rem;letter-spacing:.01em;
+  color:var(--ink);text-shadow:4px 4px 0 var(--role);transition:text-shadow .3s}
+.lede{max-width:38rem;color:var(--muted);margin:0}
+
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:2rem 0 1rem}
+.role-btn{font:inherit;cursor:pointer;text-align:left;border:3px solid var(--ink);background:var(--surface);color:var(--ink);
+  padding:1rem;border-radius:4px 18px 4px 18px;box-shadow:5px 5px 0 var(--shadow);transform:skew(-3deg);transition:transform .15s,background .15s}
+.role-btn span{display:block;transform:skew(3deg)}
+.role-btn .rn{font-family:Bungee,Impact,sans-serif;font-size:clamp(1rem,3.2vw,1.5rem);line-height:1.1}
+.role-btn .rd{font-size:.9rem;color:var(--muted);margin-top:.25rem}
+.role-btn[aria-selected="true"]{background:var(--rc);color:#fff;transform:skew(-3deg) translate(-2px,-2px);box-shadow:7px 7px 0 var(--shadow)}
+.role-btn[aria-selected="true"] .rd{color:#fff;opacity:.9}
+@media (max-width:560px){.roles{grid-template-columns:1fr}.role-btn .rd{display:none}}
+
+.intro{background:var(--surface);border-left:8px solid var(--role);padding:1.1rem 1.25rem;border-radius:0 12px 12px 0;margin:1.5rem 0}
+.intro h2{font-family:Bungee,Impact,sans-serif;font-weight:400;font-size:1.35rem;margin:0 0 .35rem}
+.intro p{margin:0;max-width:44rem}
+
+.filter{display:flex;gap:.5rem;align-items:center;margin:0 0 1rem}
+.filter input{flex:1;font:inherit;padding:.65rem .9rem;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+
+.tips{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));margin-bottom:2.5rem}
+.tip{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:1.1rem 1.15rem 1rem;display:flex;flex-direction:column}
+.tip h3{margin:0 0 .4rem;font-size:1.1rem;font-weight:700;line-height:1.25}
+.tip p{margin:0 0 1rem;color:var(--muted);font-size:.98rem}
+.vid{position:relative;display:block;width:100%;aspect-ratio:16/9;margin:0 0 .9rem;border:0;padding:0;border-radius:10px;overflow:hidden;cursor:pointer;
+  background:var(--role) center/cover no-repeat;color:#fff;font:inherit;text-align:left}
+.vid::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.05) 60%)}
+.vid .pl{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:3.4rem;height:2.4rem;border-radius:12px;background:#E62117;display:grid;place-items:center;z-index:1;font-size:1.1rem}
+.vid .vt{position:absolute;left:.7rem;right:.7rem;bottom:.55rem;z-index:1;font-size:.86rem;font-weight:700;line-height:1.25}
+.vid:hover .pl{filter:brightness(1.12)}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+.vid.off{cursor:default;display:grid;place-items:center;padding:1rem;text-align:center}
+.vid.off::after{display:none}
+.vid.off a{color:#fff;font-weight:700}
+.tip .acts{margin-top:auto;display:flex;flex-wrap:wrap;gap:.5rem}
+.btn{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-weight:700;font-size:.92rem;padding:.5rem .8rem;border-radius:8px;border:2px solid transparent}
+.btn.yt{background:#E62117;color:#fff}
+.btn.gg{border-color:var(--line);color:var(--ink)}
+.btn:hover{filter:brightness(1.08)}
+.empty{grid-column:1/-1;color:var(--muted);padding:1rem 0}
+
+.drill{background:var(--role);color:#fff;border-radius:18px;padding:1.5rem;margin-bottom:2.5rem}
+.drill h2{font-family:Bungee,Impact,sans-serif;font-weight:400;margin:0 0 .75rem;font-size:1.3rem}
+.drill ol{margin:0;padding-left:1.3rem}
+.drill li{margin:.3rem 0}
+
+footer{border-top:2px solid var(--line);padding:1.5rem 0 2.5rem;color:var(--muted);font-size:.92rem}
+footer ul{padding-left:1.1rem;margin:.5rem 0 1rem}
+footer a{color:var(--sky)}
+.tools{float:right;display:flex;gap:.5rem;align-items:center}
+.tools select{font:inherit;font-size:.9rem;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:.35rem .5rem}
+.theme{font:inherit;font-size:.9rem;background:none;border:2px solid var(--line);color:var(--ink);border-radius:8px;padding:.35rem .7rem;cursor:pointer}
+.dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:1.5rem;background:var(--surface);border:3px solid var(--ink);border-radius:4px 22px 4px 22px;box-shadow:6px 6px 0 var(--shadow);padding:1.5rem;margin:0 0 2.5rem}
+.dl h2{font-family:Bungee,Impact,sans-serif;font-weight:400;font-size:1.5rem;margin:0 0 .5rem}
+.dl p{margin:0 0 1rem;color:var(--muted)}
+.dl .req{font-size:.92rem}
+.dlbtn{display:inline-block;font:inherit;font-weight:700;text-decoration:none;background:var(--ink);color:var(--bg);padding:.8rem 1.2rem;border-radius:10px;border:0}
+.dlbtn[aria-disabled="true"]{opacity:.5;pointer-events:none}
+.dl .soon{font-size:.9rem;margin-top:.5rem}
+.dl ol{margin:0;padding-left:1.3rem}
+.dl li{margin:0 0 .55rem}
+.dl .un{font-size:.92rem;color:var(--muted);margin:.75rem 0 0}
+.dl[hidden],.applink[hidden]{display:none}
+.applink{font:inherit;font-size:.9rem;font-weight:700;background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:.45rem .75rem;cursor:pointer}
+@media (max-width:720px){.dl{grid-template-columns:1fr}}
+.viewer{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column}
+.viewer[hidden]{display:none}
+.vbar{display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;border-bottom:2px solid var(--line);background:var(--surface)}
+.vbar h2{flex:1;margin:0;font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vbar button{font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:.4rem .75rem}
+.vbar button[aria-pressed="true"]{background:var(--role);border-color:var(--role);color:#fff}
+.vbody{flex:1;display:flex}
+.vbody webview{flex:1;border:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="tools">
+    <button type="button" class="applink" id="appLink"></button>
+    <select id="lang" aria-label="Idioma">
+      <option value="pt-PT">Português (Portugal)</option>
+      <option value="pt-BR">Português (Brasil)</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+    </select>
+    <button class="theme" id="theme" type="button"></button>
+  </div>
+  <h1>Trio Pro</h1>
+  <p class="lede" id="lede"></p>
+</header>
+
+<div class="roles" role="tablist" id="roles">
+  <button class="role-btn" role="tab" data-role="fragger" style="--rc:#E2483D"><span class="rn"></span><span class="rd"></span></button>
+  <button class="role-btn" role="tab" data-role="igl" style="--rc:#6B3FD4"><span class="rn"></span><span class="rd"></span></button>
+  <button class="role-btn" role="tab" data-role="suporte" style="--rc:#1F8FE6"><span class="rn"></span><span class="rd"></span></button>
+</div>
+
+<main id="panel" role="tabpanel"></main>
+
+<section class="dl" id="dl" aria-labelledby="dlTitle">
+  <div>
+    <h2 id="dlTitle"></h2>
+    <p id="dlLead"></p>
+    <p class="req" id="dlReq"></p>
+    <a class="dlbtn" id="dlBtn" target="_blank" rel="noopener"></a>
+    <p class="soon" id="dlSoon"></p>
+  </div>
+  <div>
+    <ol id="dlSteps"></ol>
+    <p class="un" id="dlUn"></p>
+  </div>
+</section>
+
+<footer>
+  <strong id="srcTitle"></strong>
+  <ul>
+    <li><a href="https://dignitas.gg/articles/acorns-guide-on-how-to-become-an-insanely-good-igl-in-fortnite" target="_blank" rel="noopener">Dignitas — Acorn (IGL)</a></li>
+    <li><a href="https://dignitas.gg/articles/the-most-important-skill-in-fortnite-right-now-according-to-pros" target="_blank" rel="noopener">Dignitas — Khanada (decision-making)</a></li>
+    <li><a href="https://dignitas.gg/articles/a-guide-to-playing-better-duos-in-fortnite-with-pgod" target="_blank" rel="noopener">Dignitas — Pgod (duos)</a></li>
+    <li><a href="https://gamersrdy.com/fortnite/?p=1294" target="_blank" rel="noopener">Gamersrdy — FNCS trios</a></li>
+    <li><a href="https://gamertagmythras.com/blog/fortnite/fortnite-team-play-guide" target="_blank" rel="noopener">Mythras — team play</a></li>
+    <li><a href="https://www.sportskeeda.com/esports/best-endgame-loadouts-fortnite" target="_blank" rel="noopener">Sportskeeda — endgame loadouts</a></li>
+  </ul>
+  <span id="note"></span>
+</footer>
+</div>
+<div class="viewer" id="viewer" hidden>
+  <div class="vbar">
+    <button type="button" id="vBack"></button>
+    <h2 id="vTitle"></h2>
+    <button type="button" id="vClose"></button>
+  </div>
+  <div class="vbody" id="vBody"></div>
+</div>
+<script>
+const L = {
+"pt-PT":{ui:{title:"Trio Pro — Fragger, IGL e Suporte no Fortnite",lede:"Escolhe a tua função na equipa. Cada dica tem vídeos no YouTube a mostrar como se faz e uma pesquisa Google para leres mais.",filter:"Filtrar dicas (ex.: rotação, curas)",empty:"Nenhuma dica corresponde a “{q}”. Experimenta outra palavra.",yt:"Mais vídeos",gg:"Pesquisar no Google",drill:"Rotina de treino",theme:"Mudar tema",sources:"Fontes das dicas",note:"Os vídeos são de criadores do YouTube, a maioria em inglês: ativa as legendas automáticas na roda dentada do leitor. Guia de fã, sem ligação à Epic Games.",lang:"Idioma",roles:"Funções"},
+roles:{
+fragger:{name:"Fragger",short:"Ganha as lutas",what:"És quem entra primeiro nas lutas e faz as eliminações. Recebes a melhor shotgun e mais materiais, porque és tu que os gastas a ganhar fights.",tips:[
+["Entra primeiro, mas com informação","És tu que espreitas e entras na box. Antes de entrar, confirma com a equipa quantos inimigos estão lá e se alguém já tem dano.","como entrar em box fights fortnite"],
+["Fica com a melhor shotgun","A arma mais forte da equipa é tua. Pede aos colegas para te passarem upgrades e guarda os materiais para lutas, não para rotações longas.","melhor loadout fragger fortnite"],
+["Treina piece control todos os dias","Dez a quinze minutos diários em mapas criativos de piece control e edits fazem mais diferença do que horas de jogo casual.","fortnite piece control mapas criativos códigos"],
+["Apanha tags no mid-game","Dano em equipas que passam rende pontos sem te expor. Dá o tiro, avisa e volta para a posição; não persigas sozinho.","fortnite tags mid game dicas"],
+["Diz o dano que deste, sempre","Uma chamada curta como “dei 120 no do skin rosa” deixa a equipa decidir se é altura de forçar. Sem essa informação ninguém te acompanha.","fortnite comunicação callouts dicas"],
+["Joga para o trade","Se fores derrubado, a equipa deve poder trocar a tua queda por uma eliminação. Luta perto do suporte, nunca a três builds de distância.","fortnite trade kill trios"]],
+drill:["10 min de edit course para aquecer","15 min de piece control 1v1","5 min de aim trainer com shotgun","Uma ranked com foco só em comunicar dano"]},
+igl:{name:"IGL",short:"Decide o jogo",what:"És quem decide: drop, rotações, quando lutar e quando fugir. Os pros dizem que a tomada de decisão é hoje a skill que mais separa jogadores bons de jogadores de topo.",tips:[
+["Tem um plano off-spawn fixo","Escolham um drop com loot, materiais e mobilidade para os três e pratiquem-no até ser automático. Saiam com pelo menos 1000 materiais cada.","fortnite plano off spawn drop trios"],
+["Roda cedo","Quanto mais cedo te moves para a próxima zona, menos equipas tens à frente. Decide a rota antes de a zona fechar, não quando a tempestade já está em cima.","fortnite rotações dicas competitivo"],
+["Uma só voz nas decisões","Chamadas curtas e firmes: “rodamos pela esquerda agora”. Ouve a opinião da equipa, mas evita duas pessoas a dar ordens ao mesmo tempo.","como ser igl fortnite"],
+["Escolhe as lutas, não lutes todas","Antes de atacar, pergunta: quem nos pode fazer third party? Se a luta vai demorar e há equipas perto, deixa passar.","fortnite evitar third party dicas"],
+["Prepara o endgame","Na zona final, layers e tarping decidem quem sobrevive. Mantém a equipa junta e com materiais, e define quem constrói o túnel.","fortnite tarping endgame trios"],
+["Revê os replays","Vê os teus jogos e os do FNCS. Muda o plano quando falha; repetir as mesmas decisões em todas as partidas é a forma mais comum de estagnar.","fortnite rever replays melhorar"]],
+drill:["Ver 1 jogo de FNCS e anotar as rotações","Fazer de IGL em pelo menos 2 scrims por semana","Rever 1 replay teu e escrever 3 decisões erradas","Testar o off-spawn 5 vezes seguidas"]},
+suporte:{name:"Suporte",short:"Mantém a equipa viva",what:"Manténs o fragger vivo e a equipa abastecida. Não és só “o das curas”: cobres ângulos, dás materiais e avisas quem vem aí.",tips:[
+["Carrega as curas da equipa","Um setup comum em trios: suporte com curas em três slots, fragger com mobilidade e duas curas, IGL com o resto. Distribui antes das lutas, não depois.","fortnite função suporte trios dicas"],
+["Segue o fragger de perto","Fica atrás dele para cobrir third parties. Se ele cair, estás em posição de fazer o trade ou de o levantar.","fortnite posição suporte trios"],
+["Dá materiais ao IGL e ao fragger","Quem roda e quem luta gasta mais. Larga materiais sem que te peçam quando vês que estão a ficar sem nada.","fortnite dar materiais equipa"],
+["Constrói para proteger","Em Build, as tuas paredes e cones mantêm o fragger vivo durante a luta. Em Zero Build, segura cobertura e avisa a terceira equipa.","fortnite construir proteger colega"],
+["Conta inimigos e dá informação","Diz quantos são, onde estão e quem está com pouca vida. Informação clara é tão valiosa como uma eliminação.","fortnite callouts como comunicar"],
+["Joga em formação","Em trio, o suporte fica ligeiramente atrás e ao centro, a ver o que os outros dois não veem. Uma formação fixa evita que a equipa se espalhe e seja apanhada um a um.","fortnite formação trio"]],
+drill:["Praticar trocas de curas rápidas em criativo","10 min de builds defensivas (protect cone/wall)","Uma partida a fazer só callouts de inimigos","Uma partida a manter sempre a formação em triângulo"]}}},
+
+"pt-BR":{ui:{title:"Trio Pro — Fragger, IGL e Suporte no Fortnite",lede:"Escolha sua função no time. Cada dica tem vídeos no YouTube mostrando como fazer e uma pesquisa no Google para você ler mais.",filter:"Filtrar dicas (ex.: rotação, curas)",empty:"Nenhuma dica corresponde a “{q}”. Tente outra palavra.",yt:"Mais vídeos",gg:"Pesquisar no Google",drill:"Rotina de treino",theme:"Mudar tema",sources:"Fontes das dicas",note:"Os vídeos são de criadores do YouTube, a maioria em inglês: ative as legendas automáticas na engrenagem do player. Guia de fã, sem ligação com a Epic Games.",lang:"Idioma",roles:"Funções"},
+roles:{
+fragger:{name:"Fragger",short:"Vence as lutas",what:"Você é quem entra primeiro nas lutas e faz as eliminações. Fica com a melhor shotgun e mais materiais, porque é você quem gasta eles vencendo as fights.",tips:[
+["Entre primeiro, mas com informação","Você é quem espia e entra na box. Antes de entrar, confirme com o time quantos inimigos estão lá e se alguém já está com dano.","como entrar em box fight fortnite"],
+["Fique com a melhor shotgun","A arma mais forte do time é sua. Peça para os parceiros passarem os upgrades e guarde material para as lutas, não para rotações longas.","melhor loadout fragger fortnite"],
+["Treine piece control todo dia","Dez a quinze minutos por dia em mapas criativos de piece control e edit fazem mais diferença do que horas de jogo casual.","fortnite piece control mapa criativo código"],
+["Pegue tags no mid-game","Dano em times que estão passando rende pontos sem te expor. Dê o tiro, avise e volte para a posição; não persiga sozinho.","fortnite como pegar tags mid game"],
+["Fale sempre o dano que deu","Uma call curta como “dei 120 no da skin rosa” deixa o time decidir se é hora de forçar. Sem essa informação ninguém te acompanha.","fortnite callouts comunicação dicas"],
+["Jogue pelo trade","Se você for derrubado, o time precisa conseguir trocar sua queda por uma eliminação. Lute perto do suporte, nunca a três builds de distância.","fortnite trade kill trio dicas"]],
+drill:["10 min de edit course para aquecer","15 min de piece control 1v1","5 min de aim trainer com shotgun","Uma ranqueada focando só em falar o dano"]},
+igl:{name:"IGL",short:"Decide o jogo",what:"Você decide: drop, rotações, quando lutar e quando fugir. Os pros dizem que tomada de decisão é hoje a skill que mais separa jogadores bons de jogadores de elite.",tips:[
+["Tenha um plano off-spawn fixo","Escolham um drop com loot, material e mobilidade para os três e treinem até virar automático. Saiam com pelo menos 1000 de material cada.","fortnite plano off spawn drop trio"],
+["Rotacione cedo","Quanto antes você se mover para a próxima zona, menos times terá na frente. Decida a rota antes do círculo fechar, não quando a tempestade já chegou.","fortnite rotação dicas competitivo"],
+["Uma só voz nas decisões","Calls curtas e firmes: “vamos rotacionar pela esquerda agora”. Ouça o time, mas evite duas pessoas dando ordens ao mesmo tempo.","como ser igl fortnite"],
+["Escolha as lutas, não lute todas","Antes de atacar, pergunte: quem pode dar third party na gente? Se a luta vai demorar e tem time por perto, deixe passar.","fortnite como evitar third party"],
+["Prepare o endgame","No círculo final, layers e tarping decidem quem sobrevive. Mantenha o time junto e com material, e defina quem constrói o túnel.","fortnite tarping endgame trio"],
+["Assista aos replays","Veja suas partidas e as da FNCS. Mude o plano quando ele falhar; repetir as mesmas decisões toda partida é o jeito mais comum de estagnar.","fortnite como revisar replay melhorar"]],
+drill:["Assistir 1 partida da FNCS anotando as rotações","Ser IGL em pelo menos 2 scrims por semana","Revisar 1 replay seu e anotar 3 decisões erradas","Testar o off-spawn 5 vezes seguidas"]},
+suporte:{name:"Suporte",short:"Mantém o time vivo",what:"Você mantém o fragger vivo e o time abastecido. Não é só “o cara das curas”: cobre ângulos, passa material e avisa quem está chegando.",tips:[
+["Carregue as curas do time","Um setup comum em trio: suporte com cura em três slots, fragger com mobilidade e duas curas, IGL com o resto. Distribua antes das lutas, não depois.","fortnite função suporte trio dicas"],
+["Siga o fragger de perto","Fique atrás dele para cobrir third parties. Se ele cair, você está na posição de fazer o trade ou de levantar ele.","fortnite posicionamento suporte trio"],
+["Passe material para o IGL e o fragger","Quem rotaciona e quem luta gasta mais. Drope material sem esperar pedirem quando perceber que estão ficando sem.","fortnite dropar material para o time"],
+["Construa para proteger","No modo Construção, suas paredes e cones mantêm o fragger vivo durante a luta. No Zero Build, segure a cobertura e avise o terceiro time.","fortnite construir para proteger parceiro"],
+["Conte os inimigos e passe informação","Diga quantos são, onde estão e quem está com pouca vida. Informação clara vale tanto quanto uma eliminação.","fortnite callouts como se comunicar"],
+["Jogue em formação","No trio, o suporte fica um pouco atrás e no centro, vigiando o que os outros dois não veem. Uma formação fixa evita que o time se espalhe e seja pego um por um.","fortnite formação trio"]],
+drill:["Treinar troca rápida de curas no criativo","10 min de builds defensivas (protect cone/wall)","Uma partida só fazendo callouts de inimigos","Uma partida mantendo sempre a formação em triângulo"]}}},
+
+"en":{ui:{title:"Trio Pro — Fragger, IGL and Support in Fortnite",lede:"Pick your role on the team. Every tip has YouTube videos showing how it’s done and a Google search to read more.",filter:"Filter tips (e.g. rotation, heals)",empty:"No tips match “{q}”. Try another word.",yt:"More videos",gg:"Search on Google",drill:"Training routine",theme:"Switch theme",sources:"Tip sources",note:"Videos are by YouTube creators. Fan guide, not affiliated with Epic Games.",lang:"Language",roles:"Roles"},
+roles:{
+fragger:{name:"Fragger",short:"Wins the fights",what:"You’re first into fights and you get the eliminations. You carry the best shotgun and the most mats, because you’re the one spending them to win fights.",tips:[
+["Go in first, but with info","You’re the one who peeks and takes the box. Before you commit, check with your team how many enemies are there and who’s already damaged.","fortnite box fighting tutorial"],
+["Take the best shotgun","The team’s strongest weapon is yours. Ask teammates to pass you upgrades, and save mats for fights, not long rotations.","fortnite fragger loadout competitive"],
+["Practise piece control daily","Ten to fifteen minutes a day in creative piece-control and edit maps beats hours of casual play.","fortnite piece control map codes"],
+["Grab tags mid-game","Damage on passing teams earns points without exposing you. Hit the shot, call it, and get back to position; don’t chase alone.","fortnite how to get tags mid game"],
+["Always call your damage","A short call like “hit the pink skin for 120” lets the team decide whether to push. Without it, nobody can follow you.","fortnite callouts communication tips trios"],
+["Play for the trade","If you get knocked, your team should be able to trade your knock for an elimination. Fight close to your support, never three builds away.","fortnite trading trios fight tips"]],
+drill:["10 min edit course warm-up","15 min of 1v1 piece control","5 min of shotgun aim training","One ranked game focused only on calling damage"]},
+igl:{name:"IGL",short:"Calls the game",what:"You make the calls: drop, rotations, when to fight and when to leave. Pros say decision-making is now the skill that most separates good players from top players.",tips:[
+["Have a set off-spawn plan","Pick a drop with enough loot, mats and mobility for all three, and practise it until it’s automatic. Leave with at least 1,000 mats each.","fortnite off spawn guide competitive drop spot"],
+["Rotate early","The earlier you move to the next zone, the fewer teams are in your way. Decide the route before the zone closes, not when the storm is on you.","fortnite rotation guide competitive"],
+["One voice on decisions","Short, firm calls: “we rotate left now”. Listen to your team, but avoid two people giving orders at once.","how to igl fortnite"],
+["Pick your fights","Before you push, ask: who can third-party us? If the fight will be slow and teams are nearby, let it go.","fortnite fight selection third party"],
+["Set up the endgame","In the final zones, layers and tarping decide who survives. Keep the team together and stocked on mats, and decide who builds the tunnel.","fortnite tarping tutorial endgame"],
+["Review your replays","Watch your games and FNCS games. Change the plan when it fails; making the same decisions every game is the most common way to plateau.","fortnite vod review replay how to improve"]],
+drill:["Watch 1 FNCS game and note the rotations","IGL at least 2 scrims a week","Review 1 of your replays and write down 3 bad calls","Run your off-spawn 5 times in a row"]},
+suporte:{name:"Support",short:"Keeps the team alive",what:"You keep the fragger alive and the team stocked. You’re not just “the heals guy”: you hold angles, drop mats and call who’s coming.",tips:[
+["Carry the team’s heals","A common trios setup: support with heals in three slots, fragger with mobility and two heals, IGL with the rest. Hand them out before fights, not after.","fortnite support role guide trios"],
+["Stay close to the fragger","Stay behind them to cover third parties. If they go down, you’re in position to trade or to res.","fortnite support player positioning"],
+["Drop mats for the IGL and fragger","Whoever rotates and whoever fights spends the most. Drop mats without being asked when you see them running low.","fortnite drop mats teammates trios"],
+["Build to protect","In Build, your walls and cones keep the fragger alive mid-fight. In Zero Build, hold cover and call the third team.","fortnite support building protect teammate"],
+["Count enemies and share info","Say how many, where they are and who’s low. Clear info is worth as much as an elimination.","fortnite callouts guide"],
+["Play in formation","In trios, the support sits slightly behind and centred, watching what the other two can’t see. A set formation stops the team from spreading out and getting picked off one by one.","fortnite trio formation"]],
+drill:["Practise fast heal swaps in creative","10 min of defensive builds (protect cone/wall)","One game doing only enemy callouts","One game holding a triangle formation the whole time"]}}},
+
+"fr":{ui:{title:"Trio Pro — Fragger, IGL et Support sur Fortnite",lede:"Choisis ton rôle dans l’équipe. Chaque conseil a des vidéos YouTube qui montrent comment faire et une recherche Google pour en savoir plus.",filter:"Filtrer les conseils (ex. : rotation, soins)",empty:"Aucun conseil ne correspond à « {q} ». Essaie un autre mot.",yt:"Plus de vidéos",gg:"Rechercher sur Google",drill:"Routine d’entraînement",theme:"Changer de thème",sources:"Sources des conseils",note:"Les vidéos sont de créateurs YouTube, surtout en anglais : active les sous-titres automatiques avec la roue dentée du lecteur. Guide de fan, sans lien avec Epic Games.",lang:"Langue",roles:"Rôles"},
+roles:{
+fragger:{name:"Fragger",short:"Gagne les combats",what:"Tu es le premier à entrer dans les combats et tu fais les éliminations. Tu prends le meilleur pompe et le plus de matériaux, parce que c’est toi qui les dépenses pour gagner les fights.",tips:[
+["Entre en premier, mais avec des infos","C’est toi qui peek et prends la box. Avant d’entrer, vérifie avec l’équipe combien d’ennemis sont là et qui a déjà pris des dégâts.","fortnite box fight tuto"],
+["Garde le meilleur pompe","L’arme la plus forte de l’équipe est pour toi. Demande à tes coéquipiers de te passer les upgrades et garde les matériaux pour les combats, pas pour les longues rotations.","meilleur loadout fragger fortnite"],
+["Travaille le piece control chaque jour","Dix à quinze minutes par jour sur des maps créatives de piece control et d’edit valent plus que des heures de parties casual.","fortnite piece control map créatif code"],
+["Prends des tags en mid-game","Toucher les équipes qui passent rapporte des points sans t’exposer. Tire, annonce-le et reviens en position ; ne poursuis pas seul.","fortnite comment faire des tags mid game"],
+["Annonce toujours tes dégâts","Un call court comme « 120 sur le skin rose » permet à l’équipe de décider s’il faut push. Sans cette info, personne ne peut te suivre.","fortnite callouts communication conseils"],
+["Joue pour le trade","Si tu tombes, l’équipe doit pouvoir échanger ton knock contre une élimination. Combats près de ton support, jamais à trois builds de distance.","fortnite trade kill trio conseils"]],
+drill:["10 min d’edit course pour s’échauffer","15 min de piece control en 1v1","5 min d’aim training au pompe","Une partie classée en ne pensant qu’à annoncer les dégâts"]},
+igl:{name:"IGL",short:"Dirige la partie",what:"C’est toi qui décides : drop, rotations, quand combattre et quand partir. Selon les pros, la prise de décision est aujourd’hui la compétence qui sépare le plus les bons joueurs des meilleurs.",tips:[
+["Aie un plan off-spawn fixe","Choisissez un drop avec assez de loot, de matériaux et de mobilité pour les trois, et répétez-le jusqu’à ce qu’il soit automatique. Partez avec au moins 1 000 matériaux chacun.","fortnite off spawn drop trio conseils"],
+["Tourne tôt","Plus tu bouges tôt vers la zone suivante, moins tu as d’équipes devant toi. Décide de la route avant que la zone ne se ferme, pas quand la tempête est sur toi.","fortnite rotation conseils compétitif"],
+["Une seule voix pour décider","Des calls courts et fermes : « on tourne par la gauche maintenant ». Écoute l’équipe, mais évite que deux personnes donnent des ordres en même temps.","comment être igl fortnite"],
+["Choisis tes combats","Avant d’attaquer, demande-toi : qui peut nous third-party ? Si le combat va traîner et que des équipes sont proches, laisse tomber.","fortnite éviter third party conseils"],
+["Prépare l’endgame","Dans les dernières zones, les layers et le tarping décident qui survit. Garde l’équipe groupée avec des matériaux, et décide qui construit le tunnel.","fortnite tarping endgame tuto"],
+["Revois tes replays","Regarde tes parties et celles de la FNCS. Change de plan quand il échoue ; refaire les mêmes choix à chaque partie est la façon la plus courante de stagner.","fortnite analyser replay progresser"]],
+drill:["Regarder 1 partie de FNCS en notant les rotations","Être IGL sur au moins 2 scrims par semaine","Revoir 1 de tes replays et noter 3 mauvaises décisions","Répéter ton off-spawn 5 fois d’affilée"]},
+suporte:{name:"Support",short:"Garde l’équipe en vie",what:"Tu gardes le fragger en vie et l’équipe approvisionnée. Tu n’es pas juste « celui des soins » : tu tiens les angles, tu donnes des matériaux et tu annonces qui arrive.",tips:[
+["Porte les soins de l’équipe","Un setup courant en trio : support avec des soins sur trois slots, fragger avec de la mobilité et deux soins, IGL avec le reste. Distribue avant les combats, pas après.","fortnite rôle support trio conseils"],
+["Reste proche du fragger","Reste derrière lui pour couvrir les third parties. S’il tombe, tu es en position de trade ou de le relever.","fortnite placement support trio"],
+["Donne des matériaux à l’IGL et au fragger","Celui qui tourne et celui qui combat dépensent le plus. Lâche des matériaux sans attendre qu’on te le demande quand tu vois qu’ils en manquent.","fortnite donner matériaux coéquipiers"],
+["Construis pour protéger","En mode Construction, tes murs et cônes gardent le fragger en vie pendant le combat. En Zero Build, tiens la couverture et annonce la troisième équipe.","fortnite construire protéger coéquipier"],
+["Compte les ennemis et donne l’info","Dis combien ils sont, où ils sont et qui a peu de vie. Une info claire vaut autant qu’une élimination.","fortnite callouts comment communiquer"],
+["Joue en formation","En trio, le support se place légèrement en retrait et au centre, pour surveiller ce que les deux autres ne voient pas. Une formation fixe évite que l’équipe s’éparpille et se fasse éliminer un par un.","fortnite formation trio"]],
+drill:["S’entraîner aux échanges de soins rapides en créatif","10 min de builds défensifs (protect cone/wall)","Une partie à ne faire que des callouts d’ennemis","Une partie en gardant la formation en triangle du début à la fin"]}}},
+
+"es":{ui:{title:"Trio Pro — Fragger, IGL y Support en Fortnite",lede:"Elige tu rol en el equipo. Cada consejo tiene vídeos de YouTube que muestran cómo hacerlo y una búsqueda en Google para leer más.",filter:"Filtrar consejos (p. ej.: rotación, curas)",empty:"Ningún consejo coincide con «{q}». Prueba otra palabra.",yt:"Más vídeos",gg:"Buscar en Google",drill:"Rutina de entrenamiento",theme:"Cambiar tema",sources:"Fuentes de los consejos",note:"Los vídeos son de creadores de YouTube, la mayoría en inglés: activa los subtítulos automáticos en la rueda dentada del reproductor. Guía de fans, sin relación con Epic Games.",lang:"Idioma",roles:"Roles"},
+roles:{
+fragger:{name:"Fragger",short:"Gana las peleas",what:"Eres quien entra primero en las peleas y consigue las eliminaciones. Te llevas la mejor escopeta y más materiales, porque eres tú quien los gasta para ganar las fights.",tips:[
+["Entra primero, pero con información","Eres quien asoma y entra en la box. Antes de entrar, confirma con el equipo cuántos enemigos hay y quién ya tiene daño.","fortnite box fight tutorial español"],
+["Quédate con la mejor escopeta","El arma más fuerte del equipo es tuya. Pide a tus compañeros que te pasen las mejoras y guarda materiales para las peleas, no para rotaciones largas.","mejor loadout fragger fortnite"],
+["Entrena piece control cada día","Diez a quince minutos al día en mapas creativos de piece control y edits marcan más diferencia que horas de partidas casuales.","fortnite piece control mapa creativo código"],
+["Consigue tags en el mid-game","Dañar a equipos que pasan da puntos sin exponerte. Dispara, avisa y vuelve a tu posición; no persigas solo.","fortnite cómo conseguir tags mid game"],
+["Canta siempre el daño que hiciste","Un aviso corto como «le di 120 al de la skin rosa» deja que el equipo decida si empujar. Sin esa información nadie puede seguirte.","fortnite callouts comunicación consejos"],
+["Juega para el trade","Si te tumban, el equipo debe poder cambiar tu caída por una eliminación. Pelea cerca de tu support, nunca a tres builds de distancia.","fortnite trade kill tríos consejos"]],
+drill:["10 min de edit course para calentar","15 min de piece control 1v1","5 min de aim training con escopeta","Una partida clasificatoria centrada solo en cantar el daño"]},
+igl:{name:"IGL",short:"Dirige la partida",what:"Tú decides: drop, rotaciones, cuándo pelear y cuándo irse. Los pros dicen que la toma de decisiones es hoy la habilidad que más separa a los buenos jugadores de los mejores.",tips:[
+["Ten un plan off-spawn fijo","Elegid un drop con loot, materiales y movilidad para los tres y practicadlo hasta que sea automático. Salid con al menos 1000 materiales cada uno.","fortnite plan off spawn drop tríos"],
+["Rota pronto","Cuanto antes te muevas a la siguiente zona, menos equipos tendrás delante. Decide la ruta antes de que cierre la zona, no cuando la tormenta ya te alcanza.","fortnite rotaciones consejos competitivo"],
+["Una sola voz para decidir","Avisos cortos y firmes: «rotamos por la izquierda ya». Escucha al equipo, pero evita que dos personas den órdenes a la vez.","cómo ser igl fortnite"],
+["Elige tus peleas","Antes de atacar, pregúntate: ¿quién nos puede hacer third party? Si la pelea va a ser larga y hay equipos cerca, déjala pasar.","fortnite evitar third party consejos"],
+["Prepara el endgame","En las zonas finales, las capas y el tarping deciden quién sobrevive. Mantén al equipo junto y con materiales, y decide quién construye el túnel.","fortnite tarping endgame tutorial"],
+["Revisa tus repeticiones","Mira tus partidas y las de la FNCS. Cambia el plan cuando falle; repetir las mismas decisiones en cada partida es la forma más común de estancarse.","fortnite revisar repeticiones mejorar"]],
+drill:["Ver 1 partida de FNCS y apuntar las rotaciones","Hacer de IGL en al menos 2 scrims por semana","Revisar 1 repetición tuya y apuntar 3 malas decisiones","Probar el off-spawn 5 veces seguidas"]},
+suporte:{name:"Support",short:"Mantiene vivo al equipo",what:"Mantienes vivo al fragger y al equipo abastecido. No eres solo «el de las curas»: cubres ángulos, das materiales y avisas de quién viene.",tips:[
+["Lleva las curas del equipo","Un setup habitual en tríos: support con curas en tres huecos, fragger con movilidad y dos curas, IGL con el resto. Repártelas antes de las peleas, no después.","fortnite rol support tríos consejos"],
+["Sigue de cerca al fragger","Quédate detrás para cubrir third parties. Si cae, estás en posición de hacer el trade o de levantarlo.","fortnite posicionamiento support tríos"],
+["Pasa materiales al IGL y al fragger","Quien rota y quien pelea gasta más. Suelta materiales sin que te los pidan cuando veas que se están quedando sin nada.","fortnite pasar materiales compañeros"],
+["Construye para proteger","En Construcción, tus paredes y conos mantienen vivo al fragger durante la pelea. En Cero construcción, aguanta la cobertura y avisa del tercer equipo.","fortnite construir proteger compañero"],
+["Cuenta enemigos y da información","Di cuántos son, dónde están y quién tiene poca vida. La información clara vale tanto como una eliminación.","fortnite callouts cómo comunicarse"],
+["Juega en formación","En tríos, el support va un poco por detrás y en el centro, vigilando lo que los otros dos no ven. Una formación fija evita que el equipo se disperse y caiga uno a uno.","fortnite formación tríos"]],
+drill:["Practicar cambios rápidos de curas en creativo","10 min de builds defensivas (protect cone/wall)","Una partida haciendo solo callouts de enemigos","Una partida manteniendo la formación en triángulo todo el tiempo"]}}}
+};
+
+// Link do ZIP da app Windows (ex.: GitHub Releases, Azure Blob, OneDrive). Vazio = botão desativado.
+let DOWNLOAD_URL = "";
+// No GitHub Pages (utilizador.github.io/repo) o link para a última Release é gerado sozinho
+if(!DOWNLOAD_URL && location.hostname.endsWith(".github.io")){
+  const user = location.hostname.split(".")[0];
+  const repo = location.pathname.split("/").filter(Boolean)[0] || location.hostname;
+  DOWNLOAD_URL = `https://github.com/${user}/${repo}/releases/latest/download/TrioPro-Windows.zip`;
+}
+const DL = {
+"pt-PT":{link:"App para Windows",title:"App para Windows",lead:"A mesma plataforma numa app para o computador, com os vídeos e as pesquisas a abrir dentro da própria app.",req:"Requer Windows 10 ou 11 de 64 bits e cerca de 400 MB livres.",btn:"Descarregar para Windows",soon:"O download fica disponível em breve.",steps:["Descarrega o ficheiro TrioPro-Windows.zip.","Clica com o botão direito no ficheiro e escolhe “Extrair tudo…”.","Abre a pasta extraída e faz duplo clique em “Trio Pro.exe”.","Se aparecer o aviso azul do Windows (SmartScreen), clica em “Mais informações” e depois em “Executar mesmo assim”.","Para teres um atalho, clica com o botão direito em “Trio Pro.exe” e escolhe “Mostrar mais opções” → “Enviar para” → “Ambiente de trabalho (criar atalho)”."],un:"Para desinstalar, basta apagar a pasta. A app não instala nada no sistema."},
+"pt-BR":{link:"App para Windows",title:"App para Windows",lead:"A mesma plataforma em um app para o computador, com os vídeos e as pesquisas abrindo dentro do próprio app.",req:"Requer Windows 10 ou 11 de 64 bits e cerca de 400 MB livres.",btn:"Baixar para Windows",soon:"O download estará disponível em breve.",steps:["Baixe o arquivo TrioPro-Windows.zip.","Clique com o botão direito no arquivo e escolha “Extrair tudo…”.","Abra a pasta extraída e dê dois cliques em “Trio Pro.exe”.","Se aparecer o aviso azul do Windows (SmartScreen), clique em “Mais informações” e depois em “Executar assim mesmo”.","Para criar um atalho, clique com o botão direito em “Trio Pro.exe” e escolha “Mostrar mais opções” → “Enviar para” → “Área de trabalho (criar atalho)”."],un:"Para desinstalar, é só apagar a pasta. O app não instala nada no sistema."},
+"en":{link:"Windows app",title:"Windows app",lead:"The same platform as a desktop app, with videos and searches opening inside the app itself.",req:"Requires 64-bit Windows 10 or 11 and about 400 MB of free space.",btn:"Download for Windows",soon:"Download available soon.",steps:["Download the TrioPro-Windows.zip file.","Right-click the file and choose “Extract All…”.","Open the extracted folder and double-click “Trio Pro.exe”.","If the blue Windows warning (SmartScreen) appears, click “More info” and then “Run anyway”.","For a shortcut, right-click “Trio Pro.exe” and choose “Show more options” → “Send to” → “Desktop (create shortcut)”."],un:"To uninstall, just delete the folder. The app doesn’t install anything on your system."},
+"fr":{link:"Appli Windows",title:"Appli Windows",lead:"La même plateforme en appli pour ordinateur, avec les vidéos et les recherches qui s’ouvrent dans l’appli.",req:"Nécessite Windows 10 ou 11 64 bits et environ 400 Mo d’espace libre.",btn:"Télécharger pour Windows",soon:"Le téléchargement sera bientôt disponible.",steps:["Télécharge le fichier TrioPro-Windows.zip.","Fais un clic droit sur le fichier et choisis « Extraire tout… ».","Ouvre le dossier extrait et double-clique sur « Trio Pro.exe ».","Si l’avertissement bleu de Windows (SmartScreen) apparaît, clique sur « Informations complémentaires » puis sur « Exécuter quand même ».","Pour créer un raccourci, fais un clic droit sur « Trio Pro.exe » et choisis « Afficher d’autres options » → « Envoyer vers » → « Bureau (créer un raccourci) »."],un:"Pour désinstaller, il suffit de supprimer le dossier. L’appli n’installe rien sur le système."},
+"es":{link:"App para Windows",title:"App para Windows",lead:"La misma plataforma en una app para el ordenador, con los vídeos y las búsquedas abriéndose dentro de la propia app.",req:"Requiere Windows 10 u 11 de 64 bits y unos 400 MB libres.",btn:"Descargar para Windows",soon:"La descarga estará disponible pronto.",steps:["Descarga el archivo TrioPro-Windows.zip.","Haz clic derecho en el archivo y elige «Extraer todo…».","Abre la carpeta extraída y haz doble clic en «Trio Pro.exe».","Si aparece el aviso azul de Windows (SmartScreen), haz clic en «Más información» y después en «Ejecutar de todas formas».","Para crear un acceso directo, haz clic derecho en «Trio Pro.exe» y elige «Mostrar más opciones» → «Enviar a» → «Escritorio (crear acceso directo)»."],un:"Para desinstalar, basta con borrar la carpeta. La app no instala nada en el sistema."}
+};
+function renderDl(){
+  const d = DL[lang];
+  document.getElementById("appLink").textContent = d.link;
+  document.getElementById("dlTitle").textContent = d.title;
+  document.getElementById("dlLead").textContent = d.lead;
+  document.getElementById("dlReq").textContent = d.req;
+  const b = document.getElementById("dlBtn");
+  b.textContent = "⬇ " + d.btn;
+  if(DOWNLOAD_URL){ b.href = DOWNLOAD_URL; b.removeAttribute("aria-disabled"); document.getElementById("dlSoon").textContent = ""; }
+  else { b.removeAttribute("href"); b.setAttribute("aria-disabled","true"); document.getElementById("dlSoon").textContent = d.soon; }
+  document.getElementById("dlSteps").innerHTML = d.steps.map(s => `<li>${esc(s)}</li>`).join("");
+  document.getElementById("dlUn").textContent = d.un;
+}
+// Vídeo escolhido para cada dica, pela mesma ordem das dicas
+const VID = {
+  fragger:[["Yi2pXqhKVGI","16 Fortnite Fighting Tips Every Player Must Know"],["VcR9wtN7XUQ","How to Fight Like Tjino – Master the Fragger Role"],["8qPW3HEfTUc","8 Piece Control Tips & Tricks to Win More Fights"],["8FJmzm7bHkA","Best Peak To Get Storm Surge Tags"],["aZas9y0OCqU","Pro Squad Callouts: Knocked, Push, Tagged"],["W0ItIYPDRe4","How to Play Trios in Fortnite"]],
+  igl:[["oKIvXI7bcSg","How To Make Drop Maps Easily – Competitive Guide"],["JZL_TtVRnyQ","Pro Strategies for Positioning & Rotations"],["MknKcGzb3E0","How to Become the Best IGL in Fortnite"],["F5-HeGYHcEU","5 Pro Tricks to Finish Fights Fast"],["VTWgtJdJiY0","How to Tarp like a Pro IGL"],["0RymhQMl6tE","How To Actually VOD Review Pro Players"]],
+  suporte:[["rusZgj8A-SY","How To Play The Support Role In Competitive Trios"],["DE5Q4ne5IdM","How To Perfectly Play Support in a Trio"],["UPowUCeMDp4","All Fortnite Team Roles Explained (Duos + Trios)"],["5RZL0rGBz1o","A Complete Guide To Being A Support Player"],["aZas9y0OCqU","Pro Squad Callouts: Knocked, Push, Tagged"],["f20SCd3zUxg","The Best Trio Formations for FNCS"]]
+};
+const VT = {"pt-PT":{play:"Reproduzir",open:"Abrir no YouTube",off:"Não foi possível reproduzir o vídeo aqui."},"pt-BR":{play:"Reproduzir",open:"Abrir no YouTube",off:"Não foi possível reproduzir o vídeo aqui."},"en":{play:"Play",open:"Open on YouTube",off:"This video can’t play here."},"fr":{play:"Lire",open:"Ouvrir sur YouTube",off:"Impossible de lire la vidéo ici."},"es":{play:"Reproducir",open:"Abrir en YouTube",off:"No se puede reproducir el vídeo aquí."}};
+let embedBlocked = false;
+const VI = {"pt-PT":{back:"◀ Voltar",close:"Fechar ✕"},"pt-BR":{back:"◀ Voltar",close:"Fechar ✕"},"en":{back:"◀ Back",close:"Close ✕"},"fr":{back:"◀ Retour",close:"Fermer ✕"},"es":{back:"◀ Atrás",close:"Cerrar ✕"}};
+const IN_APP = /Electron/.test(navigator.userAgent);
+const HL = {"pt-PT":"pt-PT","pt-BR":"pt-BR","en":"en","fr":"fr","es":"es"};
+const yt = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+const gg = q => "https://www.google.com/search?q=" + encodeURIComponent(q);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const panel = document.getElementById("panel");
+const colors = {fragger:"#E2483D", igl:"#6B3FD4", suporte:"#1F8FE6"};
+let role = "igl", lang = detectLang();
+
+function detectLang(){
+  try{ const s = localStorage.getItem("lang"); if(s && L[s]) return s; }catch(e){}
+  const n = (navigator.language || "pt-PT").toLowerCase();
+  if(n.startsWith("pt-br")) return "pt-BR";
+  if(n.startsWith("pt")) return "pt-PT";
+  if(n.startsWith("fr")) return "fr";
+  if(n.startsWith("es")) return "es";
+  return "en";
+}
+
+function render(filter=""){
+  const u = L[lang].ui, d = L[lang].roles[role];
+  const f = filter.trim().toLowerCase();
+  const list = d.tips.filter(t => !f || (t[0]+" "+t[1]).toLowerCase().includes(f));
+  panel.innerHTML = `
+    <section class="intro"><h2>${esc(d.name)}</h2><p>${esc(d.what)}</p></section>
+    <div class="filter"><input id="q" type="search" placeholder="${esc(u.filter)}" aria-label="${esc(u.filter)}" value="${esc(filter)}"></div>
+    <section class="tips">${list.length ? list.map(t => { const v = VID[role][d.tips.indexOf(t)]; return `
+      <article class="tip">
+        ${v ? (embedBlocked ? vidOff(v) : `<button type="button" class="vid" data-v="${v[0]}" style="background-image:url(https://i.ytimg.com/vi/${v[0]}/hqdefault.jpg)" aria-label="${esc(VT[lang].play)}: ${esc(v[1])}"><span class="pl" aria-hidden="true">▶</span><span class="vt">${esc(v[1])}</span></button>`) : ""}
+        <h3>${esc(t[0])}</h3><p>${esc(t[1])}</p>
+        <div class="acts">
+          <a class="btn yt" data-kind="yt" data-q="${esc(t[2])}" data-t="${esc(t[0])}" href="${yt(t[2])}" target="_blank" rel="noopener">${esc(u.yt)}</a>
+          <a class="btn gg" data-kind="gg" data-q="${esc(t[2])}" data-t="${esc(t[0])}" href="${gg(t[2])}" target="_blank" rel="noopener">${esc(u.gg)}</a>
+        </div>
+      </article>`; }).join("") : `<p class="empty">${esc(u.empty.replace("{q}", filter))}</p>`}
+    </section>
+    <section class="drill"><h2>${esc(u.drill)}</h2><ol>${d.drill.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></section>`;
+  document.getElementById("q").addEventListener("input", e => {
+    const pos = e.target.selectionStart; render(e.target.value);
+    const n = document.getElementById("q"); n.focus(); n.setSelectionRange(pos,pos);
+  });
+}
+
+function applyLang(){
+  const u = L[lang].ui;
+  document.documentElement.lang = lang;
+  document.title = u.title;
+  document.getElementById("lang").value = lang;
+  document.getElementById("lang").setAttribute("aria-label", u.lang);
+  document.getElementById("lede").textContent = u.lede;
+  document.getElementById("theme").textContent = u.theme;
+  document.getElementById("srcTitle").textContent = u.sources;
+  document.getElementById("note").textContent = u.note;
+  document.getElementById("roles").setAttribute("aria-label", u.roles);
+  document.querySelectorAll(".role-btn").forEach(b => {
+    const r = L[lang].roles[b.dataset.role];
+    b.querySelector(".rn").textContent = r.name;
+    b.querySelector(".rd").textContent = r.short;
+  });
+  render();
+  renderDl();
+}
+
+function select(r){
+  role = L[lang].roles[r] ? r : "igl";
+  document.querySelectorAll(".role-btn").forEach(b => b.setAttribute("aria-selected", b.dataset.role===role));
+  document.documentElement.style.setProperty("--role", colors[role]);
+  render();
+}
+
+document.querySelectorAll(".role-btn").forEach(b => b.addEventListener("click", () => { location.hash = b.dataset.role; }));
+window.addEventListener("hashchange", () => select(location.hash.slice(1)));
+document.getElementById("lang").addEventListener("change", e => {
+  lang = e.target.value;
+  try{ localStorage.setItem("lang", lang); }catch(err){}
+  applyLang();
+});
+
+try{ const t = localStorage.getItem("theme"); if(t) document.documentElement.dataset.theme = t; }catch(e){}
+document.getElementById("theme").addEventListener("click", () => {
+  const cur = document.documentElement.dataset.theme;
+  const dark = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = dark ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try{ localStorage.setItem("theme", next); }catch(e){}
+});
+
+// Leitor incorporado: o vídeo toca dentro do cartão da dica
+function vidOff(v){
+  return `<div class="vid off"><p>${esc(VT[lang].off)}<br><a href="https://www.youtube.com/watch?v=${v[0]}" target="_blank" rel="noopener">${esc(VT[lang].open)} ↗</a></p></div>`;
+}
+panel.addEventListener("click", e => {
+  const b = e.target.closest("button.vid[data-v]");
+  if(!b) return;
+  const id = b.dataset.v;
+  const hl = lang.slice(0,2);
+  b.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&hl=${hl}&cc_lang_pref=${hl}" title="${esc(b.getAttribute("aria-label") || "")}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  b.removeAttribute("aria-label");
+});
+// Se o ambiente bloquear vídeos incorporados (ex.: pré-visualização com política de segurança), mostra o link
+document.addEventListener("securitypolicyviolation", e => {
+  if(!/youtube/.test(e.blockedURI || "")) return;
+  embedBlocked = true;
+  document.querySelectorAll(".vid[data-v]").forEach(b => {
+    const v = Object.values(VID).flat().find(x => x[0] === b.dataset.v);
+    if(v) b.outerHTML = vidOff(v);
+  });
+});
+
+// Visualizador integrado (só na app Windows): pesquisas e páginas abrem dentro da app
+const viewer = document.getElementById("viewer");
+let wv = null;
+function openViewer(url, title){
+  document.getElementById("vTitle").textContent = title;
+  document.getElementById("vBack").textContent = VI[lang].back;
+  document.getElementById("vClose").textContent = VI[lang].close;
+  viewer.hidden = false;
+  if(!wv){ wv = document.createElement("webview"); wv.setAttribute("allowpopups",""); document.getElementById("vBody").appendChild(wv); }
+  wv.src = url;
+}
+function closeViewer(){ viewer.hidden = true; if(wv){ wv.src = "about:blank"; } }
+document.getElementById("appLink").addEventListener("click", () => document.getElementById("dl").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}));
+if(IN_APP){
+  // Dentro da app não faz sentido mostrar o download
+  document.getElementById("dl").hidden = true;
+  document.getElementById("appLink").hidden = true;
+  panel.addEventListener("click", e => {
+    const a = e.target.closest("a[target=_blank]");
+    if(!a) return;
+    e.preventDefault();
+    const t = a.closest(".tip");
+    openViewer(a.href + (a.dataset.kind ? "&hl=" + HL[lang] : ""), t ? t.querySelector("h3").textContent : a.textContent);
+  });
+  document.getElementById("vBack").addEventListener("click", () => { if(wv && wv.canGoBack()) wv.goBack(); else closeViewer(); });
+  document.getElementById("vClose").addEventListener("click", closeViewer);
+  document.addEventListener("keydown", e => { if(e.key==="Escape" && !viewer.hidden) closeViewer(); });
+}
+
+applyLang();
+select(location.hash.slice(1));
+</script>
+</body>
+</html>
