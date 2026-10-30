@@ -2,34 +2,24 @@
 
 Guia de Fortnite por função (Fragger, IGL e Suporte), com vídeos incorporados, em 5 idiomas, mais uma app para Windows.
 
-Site: **https://outofofficedevteam.github.io/comptrainingfortnite/**
-Link curto: **https://tinyurl.com/comptrainingfortnite** (a criar depois de o site estar online)
+- Site: **https://outofofficedevteam.github.io/comptrainingfortnite/**
+- Link curto: **https://tinyurl.com/comptrainingfortnite**
+- App Windows: **https://github.com/outofofficedevteam/comptrainingfortnite/releases/latest/download/TrioPro-Windows.zip**
 
-## Publicar o site
+## Como está publicado
 
-1. Na conta `outofofficedevteam`, cria um repositório **público** chamado `comptrainingfortnite`, sem README.
-2. Clica em **uploading an existing file**, arrasta o conteúdo desta pasta (`index.html`, `.nojekyll`, `README.md` e a pasta `app-windows`) e faz *Commit changes*.
-3. Em **Settings → Pages**, em *Source* escolhe **Deploy from a branch**, branch `main`, pasta `/ (root)`, e guarda.
-4. Ao fim de 1 a 2 minutos o site fica em https://outofofficedevteam.github.io/comptrainingfortnite/
+- **Site:** GitHub Pages a partir da branch `main`, pasta `/ (root)` (Settings → Pages). Cada commit na `main` atualiza o site em 1 a 2 minutos. O `.nojekyll` faz o GitHub servir os ficheiros tal como estão.
+- **App Windows:** o `TrioPro-Windows.zip` (~110 MB) vai só para as Releases, nunca para o git (limite de 100 MB por ficheiro; o `.gitignore` exclui-o). Versão atual: release `v1.0.0`, «Trio Pro 1.0.0». O botão de download do site monta o link sozinho a partir do endereço e aponta sempre para a release mais recente.
+- **Link curto:** TinyURL `comptrainingfortnite` → `https://outofofficedevteam.github.io/comptrainingfortnite/`. No plano gratuito o destino não se pode mudar, por isso o endereço do site tem de ficar igual.
 
-O site do Out of Office não é afetado: é outro repositório. Em repositórios públicos o GitHub Actions é gratuito e sem limite, por isso a publicação não gasta minutos.
+O site do Out of Office (`outofofficedevteam.github.io`) não é afetado: é outro repositório.
 
-## Publicar a app Windows
+## Publicar uma versão nova da app Windows
 
-1. No repositório `comptrainingfortnite`, abre **Releases → Create a new release**.
-2. Tag: `v1.0.0`. Título: `Trio Pro 1.0.0`.
-3. Anexa o ficheiro **`TrioPro-Windows.zip`** (o nome tem de ser exatamente este).
-4. Clica em **Publish release**.
-
-O botão de download do site aponta sozinho para
-https://github.com/outofofficedevteam/comptrainingfortnite/releases/latest/download/TrioPro-Windows.zip
-Em versões novas, cria outra release com o mesmo nome de ficheiro.
-
-## Criar o link curto
-
-1. Abre o site e confirma que funciona.
-2. Em https://tinyurl.com, cola `https://outofofficedevteam.github.io/comptrainingfortnite/` e, em *Customize your link*, escreve `comptrainingfortnite`.
-3. Cria o link. No plano gratuito o destino não pode ser alterado depois, por isso confirma o endereço antes.
+1. Abre https://github.com/outofofficedevteam/comptrainingfortnite/releases/new
+2. Tag nova (ex.: `v1.1.0`) e título (ex.: `Trio Pro 1.1.0`).
+3. Anexa o ficheiro com o nome exatamente **`TrioPro-Windows.zip`**.
+4. Clica em **Publish release**. O link de download passa a dar a versão nova sem mudar nada no site.
 
 ## Alterar vídeos ou dicas
 
@@ -48,4 +38,4 @@ npm install --save-dev electron@33.2.1
 npx @electron/packager . "Trio Pro" --platform=win32 --arch=x64 --out=dist --overwrite --ignore=node_modules
 ```
 
-A app fica em `dist\Trio Pro-win32-x64`. Comprime essa pasta como `TrioPro-Windows.zip` e publica-a numa release nova.
+A app fica em `dist\Trio Pro-win32-x64`. Comprime essa pasta como `TrioPro-Windows.zip` e publica-a numa release nova (ver «Publicar uma versão nova da app Windows»).
